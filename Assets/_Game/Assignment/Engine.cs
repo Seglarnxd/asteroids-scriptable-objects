@@ -13,6 +13,9 @@ namespace Ship
         [SerializeField] private float _throttlePowerSimple;
         [SerializeField] private float _rotationPowerSimple;
 
+        private float speedMultiplier = 1;
+        private float powerupTime = 0;
+        
         private Rigidbody2D _rigidbody;
         
         private void FixedUpdate()
@@ -30,16 +33,30 @@ namespace Ship
             {
                 SteerRight();
             }
+            if (powerupTime > 0)
+            {
+                powerupTime -= Time.fixedDeltaTime;
+            }
+            else if (powerupTime <= 0)
+            {
+                speedMultiplier = 1;
+            }
         }
 
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
         }
-    
+        
         public void Throttle()
         {
-            _rigidbody.AddForce(transform.up * _throttlePower.Value, ForceMode2D.Force);
+            _rigidbody.AddForce(transform.up * _throttlePower.Value * speedMultiplier, ForceMode2D.Force);
+        }
+
+        public void updateSpeed(float speedMultiplier)
+        {
+            this.speedMultiplier = speedMultiplier;
+            powerupTime += 3;
         }
 
         public void SteerLeft()

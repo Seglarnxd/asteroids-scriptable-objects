@@ -11,4 +11,5 @@ namespace DefaultNamespace.ScriptableEvents
             Raise(new IntReference(newValue));
         }
     }
+
 }
